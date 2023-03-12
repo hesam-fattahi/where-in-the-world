@@ -1,6 +1,14 @@
+// sort function
+// render doesn't work correctly
+// details css needs to be fixed
+// loading animation (or limit page results)
+
 "use strict";
 
 const btnTheme = document.querySelector(".btn-theme");
+
+const pageList = document.querySelector(".list-page");
+const pageDetails = document.querySelector(".details-page");
 
 const btnSearchBar = document.querySelector(".search-bar__btn");
 const inputSearchBar = document.querySelector(".search-bar__input");
@@ -19,66 +27,129 @@ const btnSort = [
 ];
 
 const containerCountries = document.querySelector(".countries");
+const countryCards = [...document.querySelectorAll(".countries__card")];
 
-// dark mode
-btnTheme.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-});
+const containerDetails = document.querySelector(".details");
 
-const renderHTML = (arr) => {
+const btnBack = document.querySelector(".btn-back");
+
+const renderCountriesHTML = (arr) => {
   containerCountries.innerHTML = "";
-  arr.forEach((country) => {
+  arr.forEach((el) => {
     let html = `
-        <li class="countries__card tile">
-            <a href="#" class="card__link">
-                <img src="${country.flags.png}" alt="${
-      country.flags.alt
+    <li class="countries__card tile" name="${el.name.common}">
+        <a href="#" class="card__link">
+            <img src="${el.flags.png}" alt="${
+      el.flags.alt
     }" class="card__img" />
-                <div class="card__text-box">
-                    <h2 class="card__name">${country.name.common}</h2>
-                    <p class="card__info">
-                    <span class="bold">Population: </span>
-                    ${country.population
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                    </p>
-                    <p class="card__info">
-                    <span class="bold">Region: </span>
-                    ${country.region}
-                    </p>
-                    <p class="card__info">
-                    <span class="bold">Capital: </span>
-                    ${country.capital}
-                    </p>
-                </div>
-            </a>
-        </li>
-        `;
+            <div class="card__text-box">
+                <h2 class="card__name">${el.name.common}</h2>
+                <p class="card__info">
+                <span class="bold">Population: </span>
+                ${el.population
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </p>
+                <p class="card__info">
+                <span class="bold">Region: </span>
+                ${el.region}
+                </p>
+                <p class="card__info">
+                <span class="bold">Capital: </span>
+                ${el.capital}
+                </p>
+            </div>
+        </a>
+    </li>
+    `;
     containerCountries.insertAdjacentHTML("beforeend", html);
   });
 };
 
-const getCountries = (url, sort = "") => {
+const renderDetailsHTML = ([country]) => {
+  containerDetails.innerHTML = "";
+  let html = `
+  <img src="${country.flags.png}" alt="${
+    country.flags.alt
+  }" class="details__img" />
+  <div class="details__text">
+    <h2 class="details__name">${country.name.common}</h2>
+    <ul class="details__list">
+      <li class="details__item">
+        <span class="bold">Native name: </span>
+       ${
+         country.name.nativeName[Object.keys(country.name.nativeName)[0]].common
+       }
+      </li>
+      <li class="details__item">
+        <span class="bold">Population: </span>
+        ${country.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </li>
+      <li class="details__item">
+        <span class="bold">Region: </span>
+        ${country.region}
+      </li>
+      <li class="details__item">
+        <span class="bold">Sub Region: </span>
+        ${country.subregion}
+      </li>
+      <li class="details__item">
+        <span class="bold">Capital: </span>
+        ${country.capital}
+      </li>
+      <li class="details__item">
+        <span class="bold">Top Level Domain: </span>
+        ${country.tld}
+      </li>
+      <li class="details__item">
+        <span class="bold">Currencies: </span>
+        ${country.currencies[Object.keys(country.currencies)[0]].name}
+      </li>
+      <li class="details__item">
+        <span class="bold">Languages: </span>
+        ${country.languages[Object.keys(country.languages).join(", ")]}
+      </li>
+    </ul>
+    <div class="details__border-box">
+      <p class="border__title bold">Border Countries:</p>
+      <ul class="border__list">
+      ${country.borders.forEach(
+        (el) =>
+          `<li class="border__item">
+              <a href="#" class="border__btn">${el}</a>
+            </li>`
+      )}
+      </ul>
+    </div>
+  </div>
+  `;
+  // country.borders.forEach((neighbor) => {
+  //   let neighborHTML = `
+  //   <li class="border__item">
+  //     <a href="#" class="border__btn">${neighbor}</a>
+  //   </li>`;
+  //   containerBorderCountries.insertAdjacentHTML("beforeend", neighborHTML);
+  // });
+  containerDetails.insertAdjacentHTML("beforeend", html);
+};
+
+const getData = (url, fn) => {
   fetch(url)
     .then((response) => {
       if (!response.ok)
         throw new Error(`Oops! Country not found. (${response.status})`);
+
       return response.json();
     })
     .then((data) => {
-      if (sort === "Ascending") {
-        renderHTML(data.sort((a, b) => a.population - b.population));
-      } else if (sort === "Descending") {
-        renderHTML(data.sort((a, b) => b.population - a.population));
-      } else {
-        renderHTML(data);
-      }
-    })
-    .catch(
-      (err) =>
-        (containerCountries.innerHTML = `
-    <p class="error">${err.message}</p>`)
-    );
+      fn(data);
+      console.log(data[0]);
+    });
+  // .catch(
+  //   (err) =>
+  //     (containerCountries.innerHTML = `
+  //   <p class="error">${err.message}</p>`)
+  // );
 };
 
 // topbar btn and menu
@@ -95,25 +166,38 @@ btnFilter.forEach((btn) => {
     menuDropdown[0].classList.toggle("active");
     if (btn.textContent === "Reset filter") {
       btnDropdownFilterText.textContent = "Filter";
-      getCountries("https://restcountries.com/v3.1/all");
+      getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
     } else {
       btnDropdownFilterText.textContent = btn.textContent;
-      getCountries(`https://restcountries.com/v3.1/region/${btn.textContent}`);
+      getData(
+        `https://restcountries.com/v3.1/region/${btn.textContent}`,
+        renderCountriesHTML
+      );
     }
   });
 });
 
-// sort
-btnSort.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    menuDropdown[1].classList.toggle("active");
+// dark mode
+btnTheme.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
 
-    let url =
-      btnDropdownFilterText.textContent === "Filter"
-        ? "https://restcountries.com/v3.1/all"
-        : `https://restcountries.com/v3.1/region/${btnDropdownFilterText.textContent}`;
-    getCountries(url, btn.textContent);
+// back button
+btnBack.addEventListener("click", () => {
+  pageList.classList.toggle("hidden");
+  pageDetails.classList.toggle("hidden");
+});
+
+countryCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    getData(
+      `https://restcountries.com/v3.1/name/${card.name}?fullText=true`,
+      renderDetailsHTML
+    );
+
+    pageList.classList.toggle("hidden");
+    pageDetails.classList.toggle("hidden");
   });
 });
 
-getCountries("https://restcountries.com/v3.1/all");
+getData("https://restcountries.com/v3.1/all", renderCountriesHTML);

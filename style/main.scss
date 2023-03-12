@@ -33,14 +33,16 @@ body {
   transition: 0.3s ease-out;
 }
 
-header {
-  .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 1.875rem;
-    padding-bottom: 1.875rem;
-  }
+.hidden {
+  display: none !important;
+}
+
+header > .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.875rem;
+  padding-bottom: 1.875rem;
 }
 
 h1 {
@@ -64,7 +66,7 @@ h1 {
   }
 }
 
-main .container {
+.list-page.container {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -211,6 +213,20 @@ main .container {
   font-weight: 600;
 }
 
+.details-page.container {
+  padding: 1.75rem;
+}
+
+.btn-back {
+  border: none;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 3.25rem;
+}
+
 // dark mode
 
 body.dark {
@@ -236,12 +252,12 @@ body.dark {
     padding-right: 2rem;
   }
 
-  header .container {
+  header > .container {
     padding-top: 1.375rem;
     padding-bottom: 1.375rem;
   }
 
-  main .container {
+  main > .container {
     padding-top: 3rem;
     padding-bottom: 3rem;
   }
@@ -281,3 +297,5 @@ body.dark {
     transform: translateX(0);
   }
 }
+
+@import "./details";
