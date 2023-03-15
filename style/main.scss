@@ -97,7 +97,7 @@ h1 {
 
   &__menu {
     margin-top: 0.5rem;
-    display: none;
+    display: flex;
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.875rem 1.375rem;
@@ -106,9 +106,6 @@ h1 {
     z-index: 10;
     animation: fadeIn 0.3s ease-in-out;
 
-    &.active {
-      display: flex;
-    }
     li button {
       border: none;
       background: none;
@@ -297,5 +294,3 @@ body.dark {
     transform: translateX(0);
   }
 }
-
-@import "./details";

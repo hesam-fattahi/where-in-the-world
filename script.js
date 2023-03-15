@@ -155,8 +155,8 @@ const getData = (url, fn) => {
 // topbar btn and menu
 btnDropdown.forEach((btn, i) =>
   btn.addEventListener("click", () => {
-    menuDropdown[i === 0 ? 1 : 0].classList.remove("active");
-    menuDropdown[i].classList.toggle("active");
+    menuDropdown[i === 0 ? 1 : 0].classList.add("hidden");
+    menuDropdown[i].classList.toggle("hidden");
   })
 );
 

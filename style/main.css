@@ -147,7 +147,7 @@ h1 {
 }
 .dropdown__menu {
   margin-top: 0.5rem;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
   padding: 0.875rem 1.375rem;
@@ -155,9 +155,6 @@ h1 {
   width: 100%;
   z-index: 10;
   animation: fadeIn 0.3s ease-in-out;
-}
-.dropdown__menu.active {
-  display: flex;
 }
 .dropdown__menu li button {
   border: none;
