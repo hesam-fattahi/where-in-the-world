@@ -1,4 +1,3 @@
-// sort function
 // render doesn't work correctly
 // details css needs to be fixed
 // loading animation (or limit page results)
@@ -32,6 +31,8 @@ const countryCards = [...document.querySelectorAll(".countries__card")];
 const containerDetails = document.querySelector(".details");
 
 const btnBack = document.querySelector(".btn-back");
+
+let activeList = [];
 
 const renderCountriesHTML = (arr) => {
   containerCountries.innerHTML = "";
@@ -143,13 +144,13 @@ const getData = (url, fn) => {
     })
     .then((data) => {
       fn(data);
-      console.log(data[0]);
-    });
-  // .catch(
-  //   (err) =>
-  //     (containerCountries.innerHTML = `
-  //   <p class="error">${err.message}</p>`)
-  // );
+      activeList = data;
+    })
+    .catch(
+      (err) =>
+        (containerCountries.innerHTML = `
+    <p class="error">${err.message}</p>`)
+    );
 };
 
 // topbar btn and menu
@@ -163,7 +164,7 @@ btnDropdown.forEach((btn, i) =>
 // filter
 btnFilter.forEach((btn) => {
   btn.addEventListener("click", () => {
-    menuDropdown[0].classList.toggle("active");
+    menuDropdown[0].classList.toggle("hidden");
     if (btn.textContent === "Reset filter") {
       btnDropdownFilterText.textContent = "Filter";
       getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
@@ -174,6 +175,21 @@ btnFilter.forEach((btn) => {
         renderCountriesHTML
       );
     }
+  });
+});
+
+// sort
+btnSort.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    menuDropdown[1].classList.toggle("hidden");
+    if (btn.textContent === "Ascending")
+      renderCountriesHTML(
+        activeList.sort((b, a) => b.population - a.population)
+      );
+    else
+      renderCountriesHTML(
+        activeList.sort((b, a) => a.population - b.population)
+      );
   });
 });
 
@@ -188,6 +204,7 @@ btnBack.addEventListener("click", () => {
   pageDetails.classList.toggle("hidden");
 });
 
+// link to details page
 countryCards.forEach((card) => {
   card.addEventListener("click", () => {
     getData(
