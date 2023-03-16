@@ -1,6 +1,6 @@
-// render doesn't work correctly
-// details css needs to be fixed
-// loading animation (or limit page results)
+// link to details page doesn't work
+// details page css needs to be fixed
+// search bar is not working
 
 "use strict";
 
@@ -11,10 +11,8 @@ const pageDetails = document.querySelector(".details-page");
 
 const btnSearchBar = document.querySelector(".search-bar__btn");
 const inputSearchBar = document.querySelector(".search-bar__input");
-
 const btnDropdown = [...document.querySelectorAll(".dropdown__btn")];
 const menuDropdown = [...document.querySelectorAll(".dropdown__menu")];
-
 const btnDropdownFilterText = document.querySelector(
   ".dropdown__btn--filter span"
 );
@@ -24,12 +22,10 @@ const btnFilter = [
 const btnSort = [
   ...document.querySelectorAll(".dropdown__menu--sort li button"),
 ];
-
 const containerCountries = document.querySelector(".countries");
 const countryCards = [...document.querySelectorAll(".countries__card")];
-
-const containerDetails = document.querySelector(".details");
-
+const loadingCards = [...document.querySelectorAll(".loading__card")];
+const containerDetails = document.querySelector(".details-page");
 const btnBack = document.querySelector(".btn-back");
 
 let activeList = [];
@@ -38,8 +34,7 @@ const renderCountriesHTML = (arr) => {
   containerCountries.innerHTML = "";
   arr.forEach((el) => {
     let html = `
-    <li class="countries__card tile" name="${el.name.common}">
-        <a href="#" class="card__link">
+    <li class="countries__card tile" name="${el.name.common}"> 
             <img src="${el.flags.png}" alt="${
       el.flags.alt
     }" class="card__img" />
@@ -60,7 +55,6 @@ const renderCountriesHTML = (arr) => {
                 ${el.capital}
                 </p>
             </div>
-        </a>
     </li>
     `;
     containerCountries.insertAdjacentHTML("beforeend", html);
@@ -124,13 +118,6 @@ const renderDetailsHTML = ([country]) => {
     </div>
   </div>
   `;
-  // country.borders.forEach((neighbor) => {
-  //   let neighborHTML = `
-  //   <li class="border__item">
-  //     <a href="#" class="border__btn">${neighbor}</a>
-  //   </li>`;
-  //   containerBorderCountries.insertAdjacentHTML("beforeend", neighborHTML);
-  // });
   containerDetails.insertAdjacentHTML("beforeend", html);
 };
 
@@ -150,6 +137,9 @@ const getData = (url, fn) => {
       (err) =>
         (containerCountries.innerHTML = `
     <p class="error">${err.message}</p>`)
+    )
+    .finally(() =>
+      loadingCards.forEach((card) => card.classList.add("hidden"))
     );
 };
 
@@ -207,13 +197,12 @@ btnBack.addEventListener("click", () => {
 // link to details page
 countryCards.forEach((card) => {
   card.addEventListener("click", () => {
-    getData(
-      `https://restcountries.com/v3.1/name/${card.name}?fullText=true`,
-      renderDetailsHTML
-    );
-
     pageList.classList.toggle("hidden");
     pageDetails.classList.toggle("hidden");
+    // getData(
+    //   `https://restcountries.com/v3.1/name/${card.name}?fullText=true`,
+    //   renderDetailsHTML
+    // );
   });
 });
 

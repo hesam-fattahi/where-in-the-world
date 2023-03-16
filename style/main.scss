@@ -181,6 +181,7 @@ h1 {
     width: 100%;
     overflow: hidden;
     padding: 1rem;
+    cursor: pointer;
     animation: fadeIn 0.5s;
   }
 }
@@ -224,6 +225,36 @@ h1 {
   margin-bottom: 3.25rem;
 }
 
+.loading {
+  &__img {
+    box-shadow: none;
+    border-radius: 0.5rem;
+    background-color: $light-mode--input;
+    opacity: 0.1;
+    animation: skeletonScreen 2s infinite 0.5s;
+  }
+
+  &__text {
+    border-radius: 0.5rem;
+    position: relative;
+    background-color: $light-mode--input;
+    opacity: 0.1;
+
+    &--big {
+      height: 27px;
+      width: 50%;
+      animation: skeletonScreen 2s infinite 0.75s;
+    }
+
+    &--small {
+      height: 20px;
+      width: 60%;
+      margin-bottom: 0.25rem;
+      animation: skeletonScreen 2s infinite 1s;
+    }
+  }
+}
+
 // dark mode
 
 body.dark {
@@ -240,6 +271,11 @@ body.dark {
     &::placeholder {
       color: rgba($dark-mode--text, 0.75);
     }
+  }
+
+  .loading__img,
+  .loading__text {
+    background-color: rgba($dark-mode--text, 0.25);
   }
 }
 
@@ -292,5 +328,17 @@ body.dark {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes skeletonScreen {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
   }
 }

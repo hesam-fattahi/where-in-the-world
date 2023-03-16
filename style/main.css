@@ -224,6 +224,7 @@ h1 {
   width: 100%;
   overflow: hidden;
   padding: 1rem;
+  cursor: pointer;
   animation: fadeIn 0.5s;
 }
 
@@ -262,6 +263,31 @@ h1 {
   margin-bottom: 3.25rem;
 }
 
+.loading__img {
+  box-shadow: none;
+  border-radius: 0.5rem;
+  background-color: hsl(0, 0%, 52%);
+  opacity: 0.1;
+  animation: skeletonScreen 2s infinite 0.5s;
+}
+.loading__text {
+  border-radius: 0.5rem;
+  position: relative;
+  background-color: hsl(0, 0%, 52%);
+  opacity: 0.1;
+}
+.loading__text--big {
+  height: 27px;
+  width: 50%;
+  animation: skeletonScreen 2s infinite 0.75s;
+}
+.loading__text--small {
+  height: 20px;
+  width: 60%;
+  margin-bottom: 0.25rem;
+  animation: skeletonScreen 2s infinite 1s;
+}
+
 body.dark {
   color: hsl(0, 0%, 100%);
   background-color: hsl(207, 26%, 17%);
@@ -277,6 +303,10 @@ body.dark .search__input::-moz-placeholder {
 }
 body.dark .search__input::placeholder {
   color: rgba(255, 255, 255, 0.75);
+}
+body.dark .loading__img,
+body.dark .loading__text {
+  background-color: rgba(255, 255, 255, 0.25);
 }
 
 @media (min-width: 40rem) {
@@ -319,5 +349,16 @@ body.dark .search__input::placeholder {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+@keyframes skeletonScreen {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
   }
 }/*# sourceMappingURL=main.css.map */
