@@ -1,6 +1,6 @@
-// link to details page doesn't work
-// details page css needs to be fixed
-// search bar is not working
+// link to details page
+// details page css
+// search bar
 
 "use strict";
 
@@ -29,6 +29,23 @@ const containerDetails = document.querySelector(".details-page");
 const btnBack = document.querySelector(".btn-back");
 
 let activeList = [];
+
+const renderSkeleton = () => {
+  containerCountries.innerHTML = "";
+  let html = `
+  <li class="countries__card loading__card tile">
+    <div class="loading__img card__img"></div>
+    <div class="card__text-box">
+      <div class="loading__text loading__text--big card__name"></div>
+      <div class="loading__text loading__text--small"></div>
+      <div class="loading__text loading__text--small"></div>
+      <div class="loading__text loading__text--small"></div>
+    </div>
+  </li>
+  `;
+  for (let i = 0; i < 12; i++)
+    containerCountries.insertAdjacentHTML("beforeend", html);
+};
 
 const renderCountriesHTML = (arr) => {
   containerCountries.innerHTML = "";
@@ -122,6 +139,7 @@ const renderDetailsHTML = ([country]) => {
 };
 
 const getData = (url, fn) => {
+  renderSkeleton();
   fetch(url)
     .then((response) => {
       if (!response.ok)
@@ -194,15 +212,9 @@ btnBack.addEventListener("click", () => {
   pageDetails.classList.toggle("hidden");
 });
 
-// link to details page
-countryCards.forEach((card) => {
+[...document.querySelectorAll(".countries__card")].forEach((card) => {
   card.addEventListener("click", () => {
-    pageList.classList.toggle("hidden");
-    pageDetails.classList.toggle("hidden");
-    // getData(
-    //   `https://restcountries.com/v3.1/name/${card.name}?fullText=true`,
-    //   renderDetailsHTML
-    // );
+    console.log(1);
   });
 });
 
