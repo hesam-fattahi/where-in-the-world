@@ -190,11 +190,10 @@ let filterCountries = (region) => {
 };
 
 let sortCountries = (type) => {
-  let sortAsc = activeList.sort((b, a) => a.population - b.population);
-  let sortDesc = activeList.sort((b, a) => b.population - a.population);
-  if (type === "Ascending") {
-    renderCountriesHTML(sortAsc);
-  } else renderCountriesHTML(sortDesc);
+  if (type === "Ascending")
+    renderCountriesHTML(activeList.sort((b, a) => b.population - a.population));
+  else
+    renderCountriesHTML(activeList.sort((a, b) => b.population - a.population));
 };
 
 btnsFilter.forEach((btn) =>
