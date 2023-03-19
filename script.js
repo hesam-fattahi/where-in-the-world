@@ -13,13 +13,14 @@ const btnSearchBar = document.querySelector(".search-bar__btn");
 const inputSearchBar = document.querySelector(".search-bar__input");
 const btnDropdown = [...document.querySelectorAll(".dropdown__btn")];
 const menuDropdown = [...document.querySelectorAll(".dropdown__menu")];
-const btnDropdownFilterText = document.querySelector(
+const labelDropdownFilter = document.querySelector(
   ".dropdown__btn--filter span"
 );
-const btnFilter = [
+const labelDropdownSort = document.querySelector(".dropdown__btn--sort span");
+const btnsFilter = [
   ...document.querySelectorAll(".dropdown__menu--filter li button"),
 ];
-const btnSort = [
+const btnsSort = [
   ...document.querySelectorAll(".dropdown__menu--sort li button"),
 ];
 const containerCountries = document.querySelector(".countries");
@@ -43,7 +44,7 @@ const renderSkeleton = () => {
     </div>
   </li>
   `;
-  for (let i = 0; i < 12; i++)
+  for (let i = 0; i < 8; i++)
     containerCountries.insertAdjacentHTML("beforeend", html);
 };
 
@@ -138,30 +139,38 @@ const renderDetailsHTML = ([country]) => {
   containerDetails.insertAdjacentHTML("beforeend", html);
 };
 
-const getData = (url, fn) => {
-  renderSkeleton();
-  fetch(url)
-    .then((response) => {
-      if (!response.ok)
-        throw new Error(`Oops! Country not found. (${response.status})`);
+// const getData = (url, fn) => {
+//   renderSkeleton();
+//   fetch(url)
+//     .then((response) => {
+//       if (!response.ok)
+//         throw new Error(`Oops! Country not found. (${response.status})`);
 
-      return response.json();
-    })
-    .then((data) => {
-      fn(data);
-      activeList = data;
-    })
-    .catch(
-      (err) =>
-        (containerCountries.innerHTML = `
-    <p class="error">${err.message}</p>`)
-    )
-    .finally(() =>
-      loadingCards.forEach((card) => card.classList.add("hidden"))
-    );
+//       return response.json();
+//     })
+//     .then((data) => {
+//       fn(data);
+//       activeList = data;
+//     })
+//     .catch(
+//       (err) =>
+//         (containerCountries.innerHTML = `
+//     <p class="error">${err.message}</p>`)
+//     )
+//     .finally(() =>
+//       loadingCards.forEach((card) => card.classList.add("hidden"))
+//     );
+// };
+
+const getData = async function (url, func) {
+  renderSkeleton();
+  const response = await fetch(url);
+  const data = await response.json();
+  activeList = data;
+  func(data);
 };
 
-// topbar btn and menu
+// dropdowns
 btnDropdown.forEach((btn, i) =>
   btn.addEventListener("click", () => {
     menuDropdown[i === 0 ? 1 : 0].classList.add("hidden");
@@ -169,37 +178,42 @@ btnDropdown.forEach((btn, i) =>
   })
 );
 
-// filter
-btnFilter.forEach((btn) => {
+// filter and sort
+let filterCountries = (region) => {
+  if (region === "Reset")
+    getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
+  else
+    getData(
+      `https://restcountries.com/v3.1/region/${region}`,
+      renderCountriesHTML
+    );
+};
+
+let sortCountries = (type) => {
+  let sortAsc = activeList.sort((b, a) => a.population - b.population);
+  let sortDesc = activeList.sort((b, a) => b.population - a.population);
+  if (type === "Ascending") {
+    renderCountriesHTML(sortAsc);
+  } else renderCountriesHTML(sortDesc);
+};
+
+btnsFilter.forEach((btn) =>
   btn.addEventListener("click", () => {
     menuDropdown[0].classList.toggle("hidden");
-    if (btn.textContent === "Reset filter") {
-      btnDropdownFilterText.textContent = "Filter";
-      getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
-    } else {
-      btnDropdownFilterText.textContent = btn.textContent;
-      getData(
-        `https://restcountries.com/v3.1/region/${btn.textContent}`,
-        renderCountriesHTML
-      );
-    }
-  });
-});
+    let btnText = btn.textContent;
+    labelDropdownFilter.textContent = btnText === "Reset" ? "Filter" : btnText;
+    labelDropdownSort.textContent = "Sort";
+    filterCountries(btnText);
+  })
+);
 
-// sort
-btnSort.forEach((btn) => {
+btnsSort.forEach((btn) =>
   btn.addEventListener("click", () => {
     menuDropdown[1].classList.toggle("hidden");
-    if (btn.textContent === "Ascending")
-      renderCountriesHTML(
-        activeList.sort((b, a) => b.population - a.population)
-      );
-    else
-      renderCountriesHTML(
-        activeList.sort((b, a) => a.population - b.population)
-      );
-  });
-});
+    labelDropdownSort.textContent = btn.textContent;
+    sortCountries(btn.textContent);
+  })
+);
 
 // dark mode
 btnTheme.addEventListener("click", () => {
@@ -210,12 +224,6 @@ btnTheme.addEventListener("click", () => {
 btnBack.addEventListener("click", () => {
   pageList.classList.toggle("hidden");
   pageDetails.classList.toggle("hidden");
-});
-
-[...document.querySelectorAll(".countries__card")].forEach((card) => {
-  card.addEventListener("click", () => {
-    console.log(1);
-  });
 });
 
 getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
