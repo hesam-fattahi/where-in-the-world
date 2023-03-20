@@ -139,35 +139,19 @@ const renderDetailsHTML = ([country]) => {
   containerDetails.insertAdjacentHTML("beforeend", html);
 };
 
-// const getData = (url, fn) => {
-//   renderSkeleton();
-//   fetch(url)
-//     .then((response) => {
-//       if (!response.ok)
-//         throw new Error(`Oops! Country not found. (${response.status})`);
-
-//       return response.json();
-//     })
-//     .then((data) => {
-//       fn(data);
-//       activeList = data;
-//     })
-//     .catch(
-//       (err) =>
-//         (containerCountries.innerHTML = `
-//     <p class="error">${err.message}</p>`)
-//     )
-//     .finally(() =>
-//       loadingCards.forEach((card) => card.classList.add("hidden"))
-//     );
-// };
-
 const getData = async function (url, func) {
   renderSkeleton();
-  const response = await fetch(url);
-  const data = await response.json();
-  activeList = data;
-  func(data);
+  try {
+    const response = await fetch(url);
+    if (!response.ok)
+      throw new Error(`Oops! Something went wrong. ERROR ${response.status}`);
+    const data = await response.json();
+    activeList = data;
+    func(data);
+  } catch (err) {
+    console.error(err);
+    containerCountries.innerHTML = `<p class="error">${err.message}</p>`;
+  }
 };
 
 // dropdowns
