@@ -9,8 +9,10 @@ const btnTheme = document.querySelector(".btn-theme");
 const pageList = document.querySelector(".list-page");
 const pageDetails = document.querySelector(".details-page");
 
-const btnSearchBar = document.querySelector(".search-bar__btn");
-const inputSearchBar = document.querySelector(".search-bar__input");
+const btnSearch = document.querySelector(".search__btn--search");
+const btnCloseSearch = document.querySelector(".search__btn--close");
+const inputSearch = document.querySelector(".search__input");
+
 const btnDropdown = [...document.querySelectorAll(".dropdown__btn")];
 const menuDropdown = [...document.querySelectorAll(".dropdown__menu")];
 const labelDropdownFilter = document.querySelector(
@@ -143,8 +145,7 @@ const getData = async function (url, func) {
   renderSkeleton();
   try {
     const response = await fetch(url);
-    if (!response.ok)
-      throw new Error(`Oops! Something went wrong. ERROR ${response.status}`);
+    if (!response.ok) throw new Error(`Oops! Country not found.`);
     const data = await response.json();
     activeList = data;
     func(data);
@@ -207,6 +208,33 @@ btnTheme.addEventListener("click", () => {
 btnBack.addEventListener("click", () => {
   pageList.classList.toggle("hidden");
   pageDetails.classList.toggle("hidden");
+});
+
+// search
+btnSearch.addEventListener("click", () => {
+  getData(
+    `https://restcountries.com/v3.1/name/${inputSearch.value}`,
+    renderCountriesHTML
+  );
+});
+
+inputSearch.addEventListener("input", () => {
+  if (inputSearch.value) {
+    btnCloseSearch.classList.remove("hidden");
+    getData(
+      `https://restcountries.com/v3.1/name/${inputSearch.value}`,
+      renderCountriesHTML
+    );
+  } else {
+    btnCloseSearch.classList.add("hidden");
+    getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
+  }
+});
+
+btnCloseSearch.addEventListener("click", () => {
+  inputSearch.value = "";
+  btnCloseSearch.classList.add("hidden");
+  getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
 });
 
 getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
