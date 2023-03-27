@@ -35,53 +35,44 @@
       </div>
     </header>
     <main>
-      <div class="container list-page">
-        <div class="topbar">
-          <div class="search">
-            <div class="search__bar tile">
-              <button class="search__btn search__btn--search">
-                <ion-icon name="search-outline"></ion-icon>
-              </button>
-              <input
-                class="search__input"
-                type="text"
-                name="search-input"
-                id="search-input"
-                placeholder="Search for a country..."
-              />
-              <button class="search__btn search__btn--close hidden">
-                <ion-icon name="close-outline"></ion-icon>
-              </button>
-            </div>
-          </div>
-          <div class="topbar__dropdown">
-            <button class="dropdown__btn dropdown__btn--filter tile">
-              <span>Filter</span>
-              <ion-icon name="chevron-down-outline"></ion-icon>
+      <div class="container page--list">
+        <div class="toolbar">
+          <form action="#" class="search tile">
+            <button type="submit" class="search__btn search__btn--sumbit">
+              <ion-icon name="search-outline"></ion-icon>
             </button>
-            <ul class="dropdown__menu dropdown__menu--filter tile hidden">
-              <li><button>Africa</button></li>
-              <li><button>America</button></li>
-              <li><button>Asia</button></li>
-              <li><button>Europe</button></li>
-              <li><button>Oceania</button></li>
-              <li><button class="reset">Reset</button></li>
-            </ul>
-          </div>
-          <div class="topbar__dropdown">
-            <button class="dropdown__btn dropdown__btn--sort tile">
-              <span>Sort</span>
-              <ion-icon name="chevron-down-outline"></ion-icon>
+            <input
+              type="text"
+              class="search__input"
+              placeholder="Search for a country..."
+            />
+            <button class="search__btn search__btn--clear hidden">
+              <ion-icon name="close-outline"></ion-icon>
             </button>
-            <ul class="dropdown__menu dropdown__menu--sort tile hidden">
-              <li><button>Ascending</button></li>
-              <li><button>Descending</button></li>
-            </ul>
-          </div>
+          </form>
+          <form action="#" class="dropdown dropdown__filter tile">
+            <label for="filter" class="sr-only">Filter</label>
+            <select name="filter" id="filter">
+              <option value="" disabled selected>Filter</option>
+              <option value="africa">Africa</option>
+              <option value="america">America</option>
+              <option value="asia">Asia</option>
+              <option value="europe">Europe</option>
+              <option value="oceania">Oceania</option>
+            </select>
+          </form>
+          <form action="#" class="dropdown dropdown__sort tile">
+            <label for="sort" class="sr-only">Sort</label>
+            <select name="sort" id="sort">
+              <option value="" disabled selected>Sort</option>
+              <option value="ascending">Ascending</option>
+              <option value="sescending">Descending</option>
+            </select>
+          </form>
         </div>
         <ul class="countries"></ul>
       </div>
-      <div class="container details-page hidden">
+      <div class="container page--details hidden">
         <button class="btn-back tile">
           <ion-icon name="chevron-back-outline"></ion-icon>
           Back
