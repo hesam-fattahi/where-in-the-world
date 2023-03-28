@@ -5,24 +5,24 @@
 
 const btnTheme = document.querySelector(".btn-theme");
 
-const pageList = document.querySelector(".list-page");
-const pageDetails = document.querySelector(".details-page");
-const btnSearch = document.querySelector(".search__btn--search");
-const btnCloseSearch = document.querySelector(".search__btn--close");
-const inputSearch = document.querySelector(".search__input");
+const pageList = document.querySelector(".page--list");
+const pageDetails = document.querySelector(".page--details");
 
-const btnDropdown = [...document.querySelectorAll(".dropdown__btn")];
-const menuDropdown = [...document.querySelectorAll(".dropdown__menu")];
-const labelDropdownFilter = document.querySelector(
-  ".dropdown__btn--filter span"
-);
-const labelDropdownSort = document.querySelector(".dropdown__btn--sort span");
-const btnsFilter = [
-  ...document.querySelectorAll(".dropdown__menu--filter li button"),
+const searchBtnSubmit = document.querySelector(".search__btn--submit");
+const searchBtnClear = document.querySelector(".search__btn--clear");
+const searchInput = document.querySelector(".search__input");
+
+const dropBtn = [...document.querySelectorAll(".dropbtn")];
+const dropdownContent = [...document.querySelectorAll(".dropdown__content")];
+const dropBtnLabelFilter = document.querySelector(".dropbtn--filter span");
+const dropBtnLabelSort = document.querySelector(".dropbtn--sort span");
+const filterBtns = [
+  ...document.querySelectorAll(".dropdown__content--filter button"),
 ];
-const btnsSort = [
-  ...document.querySelectorAll(".dropdown__menu--sort li button"),
+const sortBtns = [
+  ...document.querySelectorAll(".dropdown__content--sort button"),
 ];
+
 const containerCountries = document.querySelector(".countries");
 const countryCards = [...document.querySelectorAll(".countries__card")];
 const loadingCards = [...document.querySelectorAll(".loading__card")];
@@ -173,10 +173,10 @@ const getData = async function (url, func) {
 };
 
 // dropdowns
-btnDropdown.forEach((btn, i) =>
+dropBtn.forEach((btn, i) =>
   btn.addEventListener("click", () => {
-    menuDropdown[i === 0 ? 1 : 0].classList.add("hidden");
-    menuDropdown[i].classList.toggle("hidden");
+    dropdownContent[i === 0 ? 1 : 0].classList.add("hidden");
+    dropdownContent[i].classList.toggle("hidden");
   })
 );
 
@@ -191,12 +191,12 @@ let filterCountries = (region) => {
     );
 };
 
-btnsFilter.forEach((btn) =>
+filterBtns.forEach((btn) =>
   btn.addEventListener("click", () => {
-    menuDropdown[0].classList.toggle("hidden");
+    dropdownContent[0].classList.toggle("hidden");
     let btnText = btn.textContent;
-    labelDropdownFilter.textContent = btnText === "Reset" ? "Filter" : btnText;
-    labelDropdownSort.textContent = "Sort";
+    dropBtnLabelFilter.textContent = btnText === "Reset" ? "Filter" : btnText;
+    dropBtnLabelSort.textContent = "Sort";
     filterCountries(btnText);
   })
 );
@@ -209,10 +209,10 @@ let sortCountries = (type) => {
     renderCountriesHTML(activeList.sort((a, b) => b.population - a.population));
 };
 
-btnsSort.forEach((btn) =>
+sortBtns.forEach((btn) =>
   btn.addEventListener("click", () => {
-    menuDropdown[1].classList.toggle("hidden");
-    labelDropdownSort.textContent = btn.textContent;
+    dropdownContent[1].classList.toggle("hidden");
+    dropBtnLabelSort.textContent = btn.textContent;
     sortCountries(btn.textContent);
   })
 );
@@ -230,16 +230,16 @@ btnBack.addEventListener("click", () => {
 
 // search
 const resetSearch = () => {
-  inputSearch.value = "";
+  searchInput.value = "";
   btnCloseSearch.classList.add("hidden");
   getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
 };
 
-inputSearch.addEventListener("input", () => {
-  if (inputSearch.value) {
+searchInput.addEventListener("input", () => {
+  if (searchInput.value) {
     btnCloseSearch.classList.remove("hidden");
     getData(
-      `https://restcountries.com/v3.1/name/${inputSearch.value}`,
+      `https://restcountries.com/v3.1/name/${searchInput.value}`,
       renderCountriesHTML
     );
   } else resetSearch();
@@ -247,9 +247,9 @@ inputSearch.addEventListener("input", () => {
 
 btnCloseSearch.addEventListener("click", resetSearch);
 
-btnSearch.addEventListener("click", () => {
+searchBtnSubmit.addEventListener("click", () => {
   getData(
-    `https://restcountries.com/v3.1/name/${inputSearch.value}`,
+    `https://restcountries.com/v3.1/name/${searchInput.value}`,
     renderCountriesHTML
   );
 });
@@ -257,5 +257,3 @@ btnSearch.addEventListener("click", () => {
 // init
 getData("https://restcountries.com/v3.1/all", renderCountriesHTML);
 renderDetailsHTML();
-
-getDetails("italy");
