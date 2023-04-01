@@ -126,11 +126,15 @@ const renderCards = function (url) {
   fetchData(url, `Oops! Country not found. Please reload the page. 🙇`)
     .then((data) => {
       renderCountriesHTML(data);
+      activeList = data;
       return [...document.querySelectorAll(".countries__card")];
     })
     .then((cards) => {
       for (const card of cards) {
-        card.addEventListener("click", () => cardLink(card.dataset.name));
+        card.addEventListener("click", () => {
+          cardLink(card.dataset.name);
+          document.title = `${card.dataset.name} | Where in the world`;
+        });
       }
     })
     .catch((err) => {
@@ -174,10 +178,14 @@ filterBtns.forEach((btn) =>
   btn.addEventListener("click", () => {
     dropdownContent[0].classList.toggle("hidden");
     let btnText = btn.textContent;
-    dropBtnLabelFilter.textContent = btnText === "Reset" ? "Filter" : btnText;
-    dropBtnLabelSort.textContent = "Sort";
-    if (region === "Reset") renderCards(urlAllCountries);
-    else renderCards(`https://restcountries.com/v3.1/region/${btnText}`);
+    if (btnText === "Reset") {
+      dropBtnLabelFilter.textContent = "Filter by Region";
+      renderCards(urlAllCountries);
+    } else {
+      dropBtnLabelFilter.textContent = btnText;
+      renderCards(`https://restcountries.com/v3.1/region/${btnText}`);
+    }
+    dropBtnLabelSort.textContent = "Sort by Population";
   })
 );
 
@@ -209,7 +217,10 @@ btnTheme.addEventListener("click", () => {
 
 //////////////////////////////
 //// details page's back button
-btnBack.addEventListener("click", switchPage);
+btnBack.addEventListener("click", () => {
+  switchPage();
+  document.title = `Where in the world | Encyclopedia of the world's countries`;
+});
 
 //////////////////////////////
 //// search
