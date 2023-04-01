@@ -1,6 +1,8 @@
 "use strict";
 
 const btnTheme = document.querySelector(".btn-theme");
+const btnThemeIcon = document.querySelector(".btn-theme ion-icon");
+const btnThemeText = document.querySelector(".btn-theme p");
 
 const pageList = document.querySelector(".page--list");
 const pageDetails = document.querySelector(".page--details");
@@ -200,6 +202,9 @@ sortBtns.forEach((btn) =>
 //// theme switch
 btnTheme.addEventListener("click", () => {
   document.body.classList.toggle("dark");
+  let mode = btnThemeText.textContent;
+  btnThemeText.textContent = mode === "Dark mode" ? "Light mode" : "Dark mode";
+  btnThemeIcon.name = mode === "Dark mode" ? "sunny-outline" : "moon-outline";
 });
 
 //////////////////////////////
