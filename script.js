@@ -2,7 +2,7 @@
 
 const btnTheme = document.querySelector(".btn-theme");
 const btnThemeIcon = document.querySelector(".btn-theme ion-icon");
-const btnThemeText = document.querySelector(".btn-theme p");
+const btnThemeText = document.querySelector(".btn-theme span");
 
 const pageList = document.querySelector(".page--list");
 const pageDetails = document.querySelector(".page--details");
