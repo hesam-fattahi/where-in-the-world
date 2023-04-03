@@ -20,6 +20,10 @@ This frontend project is based on the challenge by [Frontend Mentor](https://www
 
 ## Screenshots
 
+![Screenshot of homepage - desktop version - both dark and light mode](./img/screenshot-home.jpg)
+
+![Screenshot of details page - desktop version - both dark and light mode](./img/screenshot-details.jpg)
+
 ## Technologies
 
 - [SASS](https://sass-lang.com/)
