@@ -2,12 +2,16 @@
 
 Encyclopedia of the world's countries
 
+- [Report bug](https://github.com/hesam-fattahi/where-in-the-world/issues)
+- [Request feature](https://github.com/hesam-fattahi/where-in-the-world/issues)
+
 ## Table of Contents
 
 - [Overview](#overview)
 - [Screenshots](#screenshots)
 - [Technologies](#technologies)
 - [Usage](#usage)
+- [Live Demo](#live-demo)
 - [Project Status](#project-status)
 - [Contributions](#contributions)
 - [Author](#author)
@@ -36,7 +40,7 @@ This frontend project is based on the challenge by [Frontend Mentor](https://www
 2. Open `index.html` in your browser
 3. Enjoy learning about the world's countries
 
-or
+## Live demo
 
 You can view a live demo of this project [here](https://hesam-fattahi.github.io/where-in-the-world/).
 
