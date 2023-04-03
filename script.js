@@ -141,9 +141,12 @@ const renderDetailsHTML = async function ([country]) {
   containerDetails.insertAdjacentHTML("beforeend", html);
 };
 
-const fetchData = async function (url, errorMessage = "") {
+const fetchData = async function (url) {
   const response = await fetch(url);
-  if (!response.ok) throw new Error(errorMessage);
+  if (!response.ok)
+    throw new Error(
+      `Oops! There seems to be a problem. Please reload the page. 🙇`
+    );
   const data = await response.json();
   return data;
 };
@@ -151,10 +154,7 @@ const fetchData = async function (url, errorMessage = "") {
 const renderCards = async function (url) {
   renderSkeletonCards();
   try {
-    const countries = await fetchData(
-      url,
-      `Oops! Country not found. Please reload the page. 🙇`
-    );
+    const countries = await fetchData(url);
     renderCountriesHTML(countries);
     activeList = countries;
     const cardsHTML = await [...document.querySelectorAll(".countries__card")];
@@ -172,10 +172,7 @@ const renderCards = async function (url) {
 const renderDetails = async function (url) {
   renderSkeletonDetails();
   try {
-    const details = await fetchData(
-      url,
-      `Oops! Country not found. Please reload the page. 🙇`
-    );
+    const details = await fetchData(url);
     await renderDetailsHTML(details);
     const bordersHTML = await [...document.querySelectorAll(".borders__btn")];
     bordersHTML.forEach((btn) =>
