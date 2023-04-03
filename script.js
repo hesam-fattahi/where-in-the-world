@@ -243,11 +243,22 @@ sortBtns.forEach((btn) =>
 
 //////////////////////////////
 //// theme switch
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+  document.body.classList.toggle("dark", savedTheme === "dark");
+  btnThemeText.textContent = savedTheme === "dark" ? "Light mode" : "Dark mode";
+  btnThemeIcon.name = savedTheme === "dark" ? "sunny-outline" : "moon-outline";
+}
+
 btnTheme.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  let mode = btnThemeText.textContent;
-  btnThemeText.textContent = mode === "Dark mode" ? "Light mode" : "Dark mode";
-  btnThemeIcon.name = mode === "Dark mode" ? "sunny-outline" : "moon-outline";
+  const isDarkMode = document.body.classList.contains("dark");
+  btnThemeText.textContent = isDarkMode ? "Light mode" : "Dark mode";
+  btnThemeIcon.name = isDarkMode ? "sunny-outline" : "moon-outline";
+
+  localStorage.setItem("theme", isDarkMode ? "dark" : "light");
 });
 
 //////////////////////////////
