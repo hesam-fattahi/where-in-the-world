@@ -80,7 +80,32 @@ const renderCountriesHTML = function (arr) {
   });
 };
 
-const renderDetailsHTML = function ([country]) {
+const renderBorderCountries = async function (arr) {
+  if (arr.length > 0) {
+    const countries = await Promise.all(
+      arr.map(async (code) => {
+        const [data] = await fetchData(
+          `https://restcountries.com/v3.1/alpha/${code}`
+        );
+        return data;
+      })
+    );
+    const countriesHTML = countries.map(
+      (country) =>
+        `
+    <li>
+    <button class="borders__btn tile" data-name="${country.name.common}">
+      <img src="${country.flags.svg}" alt="${country.flags.alt}" class="borders__flag">
+      <span class="borders__name">${country.name.common}</span>
+      </button>
+      </li>
+      `
+    );
+    return countriesHTML.join("");
+  } else return "No border countries.";
+};
+
+const renderDetailsHTML = async function ([country]) {
   containerDetails.innerHTML = "";
   let html = `
     <img src="${country.flags.svg}" alt="${
@@ -107,7 +132,9 @@ const renderDetailsHTML = function ([country]) {
       ).join(", ")}</p>
       <div class="details__borders">
         <span class="bold">Border Countries: </span>
-        <ul class="borders__list"></ul>
+        <ul class="borders__list">
+        ${await renderBorderCountries(country.borders)}
+        </ul>
       </div>
     </div>
   `;
@@ -121,36 +148,47 @@ const fetchData = async function (url, errorMessage = "") {
   return data;
 };
 
-const renderCards = function (url) {
+const renderCards = async function (url) {
   renderSkeletonCards();
-  fetchData(url, `Oops! Country not found. Please reload the page. 🙇`)
-    .then((data) => {
-      renderCountriesHTML(data);
-      activeList = data;
-      return [...document.querySelectorAll(".countries__card")];
-    })
-    .then((cards) => {
-      for (const card of cards) {
-        card.addEventListener("click", () => {
-          cardLink(card.dataset.name);
-          document.title = `${card.dataset.name} | Where in the world`;
-        });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      containerCountries.innerHTML = `<p class="error">${err.message}`;
+  try {
+    const countries = await fetchData(
+      url,
+      `Oops! Country not found. Please reload the page. 🙇`
+    );
+    renderCountriesHTML(countries);
+    activeList = countries;
+    const cardsHTML = await [...document.querySelectorAll(".countries__card")];
+    cardsHTML.forEach((card) => {
+      card.addEventListener("click", () => {
+        cardLink(card.dataset.name);
+        document.title = `${card.dataset.name} | Where in the world`;
+      });
     });
+  } catch (err) {
+    containerCountries.innerHTML = `<p class="error">${err.message}`;
+  }
 };
 
-const renderDetails = function (url) {
+const renderDetails = async function (url) {
   renderSkeletonDetails();
-  fetchData(url, `Oops! Country not found. Please reload the page. 🙇`)
-    .then((data) => renderDetailsHTML(data))
-    .catch((err) => {
-      console.error(err);
-      containerCountries.innerHTML = `<p class="error">${err.message}`;
-    });
+  try {
+    const details = await fetchData(
+      url,
+      `Oops! Country not found. Please reload the page. 🙇`
+    );
+    await renderDetailsHTML(details);
+    const bordersHTML = await [...document.querySelectorAll(".borders__btn")];
+    bordersHTML.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        renderDetails(
+          `https://restcountries.com/v3.1/name/${btn.dataset.name}`
+        );
+        document.title = `${btn.dataset.name} | Where in the world`;
+      })
+    );
+  } catch (err) {
+    containerDetails.innerHTML = `<p class="error">${err.message}`;
+  }
 };
 
 const cardLink = function (country) {

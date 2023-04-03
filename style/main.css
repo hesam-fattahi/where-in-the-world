@@ -286,14 +286,43 @@ h1 {
   flex-direction: column;
   gap: 0.75rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 16rem);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 .details__name {
   margin-bottom: 0.25rem;
   grid-column: 1/-1;
 }
 .details__borders {
+  grid-column: 1/-1;
   margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.borders__list {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.borders__btn {
+  padding: 0.25rem 1rem;
+  border: none;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.borders__name {
+  white-space: nowrap;
+}
+.borders__flag {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
 }
 
 .skeleton {

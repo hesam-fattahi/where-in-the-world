@@ -257,7 +257,7 @@ h1 {
     gap: 0.75rem;
 
     display: grid;
-    grid-template-columns: repeat(auto-fit, 16rem);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 
   &__name {
@@ -266,7 +266,41 @@ h1 {
   }
 
   &__borders {
+    grid-column: 1/-1;
     margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+}
+
+.borders {
+  &__list {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  &__btn {
+    padding: 0.25rem 1rem;
+    border: none;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__name {
+    white-space: nowrap;
+  }
+
+  &__flag {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
   }
 }
 
