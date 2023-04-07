@@ -121,7 +121,7 @@ h1 {
   background-color: rgba(13, 162, 231, 0.1);
 }
 
-.page--list.container {
+.container {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -249,10 +249,6 @@ h1 {
 
 .bold {
   font-weight: 600;
-}
-
-.page--details.container {
-  padding: 1.75rem;
 }
 
 .btn-back {
