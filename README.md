@@ -40,7 +40,7 @@ You can view a live demo of this project [here](https://hesam-fattahi.github.io/
 
 ## Project Status
 
-This project is currently **in development**. Future updates may include additional features and improvements.
+This project is currently in development. The **React version** of the project is currently in progress. Future updates may include additional features and improvements.
 
 ## Contributions
 
