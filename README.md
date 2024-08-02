@@ -38,10 +38,6 @@ This frontend project is based on the challenge by [Frontend Mentor](https://www
 
 You can view a live demo of this project [here](https://hesam-fattahi.github.io/where-in-the-world/).
 
-## Project Status
-
-This project is currently in development. The **React version** of the project is currently in progress. Future updates may include additional features and improvements.
-
 ## Contributions
 
 **Contributions are welcome and greatly appreciated!** Please open an issue or submit a pull request if you would like to contribute.
